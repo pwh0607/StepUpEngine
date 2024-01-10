@@ -1,66 +1,84 @@
-﻿#include <iostream>
-#include <SDL.h>
+﻿#include <SDL.h>
+#include <iostream>
 
-class GameEngine {
-public:
-    GameEngine() {
-        if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-            std::cerr << "SDL initialization failed: " << SDL_GetError() << std::endl;
-            exit(EXIT_FAILURE);
-        }
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
 
-        window = SDL_CreateWindow("Simple Game Engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
+SDL_Window* gWindow = nullptr;
+SDL_Renderer* gRenderer = nullptr;
 
-        if (!window) {
-            std::cerr << "Window creation failed: " << SDL_GetError() << std::endl;
-            exit(EXIT_FAILURE);
-        }
-
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-        if (!renderer) {
-            std::cerr << "Renderer creation failed: " << SDL_GetError() << std::endl;
-            exit(EXIT_FAILURE);
-        }
+bool init() {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
+        return false;
     }
 
-    ~GameEngine() {
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(window);
-        SDL_Quit();
+    gWindow = SDL_CreateWindow("SDL UI Example", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    if (gWindow == nullptr) {
+        std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+        return false;
     }
 
-    void run() {
-        bool quit = false;
-        SDL_Event e;
-
-        while (!quit) {
-            while (SDL_PollEvent(&e) != 0) {
-                if (e.type == SDL_QUIT) {
-                    quit = true;
-                }
-            }
-
-            // 게임 로직 업데이트
-
-            // 그래픽 렌더링
-            SDL_RenderClear(renderer);
-            // 여기에서 게임 객체를 그리는 로직을 추가할 수 있습니다.
-            SDL_RenderPresent(renderer);
-
-            // 프레임 속도 제어
-            SDL_Delay(16); // 60fps로 설정
-        }
+    gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
+    if (gRenderer == nullptr) {
+        std::cerr << "Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+        return false;
     }
 
-private:
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-};
+    return true;
+}
+
+void close() {
+    SDL_DestroyRenderer(gRenderer);
+    SDL_DestroyWindow(gWindow);
+    SDL_Quit();
+}
+
+void drawButton(int x, int y, int width, int height, SDL_Color color) {
+    SDL_SetRenderDrawColor(gRenderer, color.r, color.g, color.b, color.a);
+    SDL_Rect buttonRect = { x, y, width, height };
+    SDL_RenderFillRect(gRenderer, &buttonRect);
+}
 
 int main(int argc, char* args[]) {
-    GameEngine game;
-    game.run();
+    if (!init()) {
+        std::cerr << "Failed to initialize!" << std::endl;
+        return -1;
+    }
 
+    bool quit = false;
+    SDL_Event e;
+
+    SDL_Color buttonColor = { 255, 0, 0, 255 }; // Red
+
+    while (!quit) {
+        while (SDL_PollEvent(&e) != 0) {
+            if (e.type == SDL_QUIT) {
+                quit = true;
+            }
+            else if (e.type == SDL_MOUSEBUTTONDOWN) {
+                int mouseX, mouseY;
+                SDL_GetMouseState(&mouseX, &mouseY);
+
+                // Check if the mouse click is inside the button area
+                if (mouseX >= 100 && mouseX <= 200 && mouseY >= 100 && mouseY <= 150) {
+                    // Change button color on click
+                    buttonColor = { 0, 0, 255, 255 }; // Blue
+                }
+            }
+        }
+
+        // Clear the renderer
+        SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255); // White
+        SDL_RenderClear(gRenderer);
+
+        // Draw the button
+        drawButton(100, 100, 100, 50, buttonColor);
+
+        // Update the screen
+        SDL_RenderPresent(gRenderer);
+    }
+
+    close();
     return 0;
 }

@@ -1,2 +1,2 @@
 ﻿  GameEngineSample.cpp
-D:\Project\GameEngine\GameEngineSample\GameEngineSample.cpp(2,10): fatal  error C1083: 포함 파일을 열 수 없습니다. 'SDL.h': No such file or directory
+  GameEngineSample.vcxproj -> D:\Project\GameEngine\x64\Debug\GameEngineSample.exe
