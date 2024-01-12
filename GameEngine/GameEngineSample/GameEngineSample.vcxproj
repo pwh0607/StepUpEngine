@@ -104,13 +104,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Project\GameEngine\SDL2-2.28.5\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Project\GameEngine\SDL\SDL2_image-2.8.2\include;D:\Project\GameEngine\SDL\SDL2_ttf-2.20.2\include;D:\Project\GameEngine\SDL\SDL2-2.28.5\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Project\GameEngine\SDL2-2.28.5\lib\x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Project\GameEngine\SDL\SDL2_ttf-2.20.2\lib\x64;D:\Project\GameEngine\SDL\SDL2_image-2.8.2\lib\x64;D:\Project\GameEngine\SDL\SDL2-2.28.5\lib\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -130,70 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_App.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_Button.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_CheckBox.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_ComboBox.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_Config.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_EditText.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_Fonts.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_IconView.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_image.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_ImageView.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_Label.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_List.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_Menu.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_MenuBar.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_MessageBox.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_PopupView.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_Preference.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_RadioButton.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_RadioButtonGroup.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_ScrollView.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_shapes.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_Slider.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_StatusBar.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_Switch.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_TextUtil.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_TextView.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_TopBar.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_Utils.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\GUI_View.cpp" />
-    <ClCompile Include="..\..\..\SDL_gui\SDL2_gui\SDL_gui.cpp" />
     <ClCompile Include="GameEngineSample.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_App.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_Button.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_CheckBox.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_ComboBox.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_Config.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_EditText.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_Fonts.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_IconView.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_image.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_ImageView.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_iOS.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_Label.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_List.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_Menu.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_MenuBar.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_MessageBox.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_PopupView.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_Preference.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_RadioButton.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_RadioButtonGroup.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_ScrollView.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_shapes.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_Slider.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_StatusBar.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_Switch.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_TextUtil.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_TextView.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_TopBar.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_Utils.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\GUI_View.h" />
-    <ClInclude Include="..\..\..\SDL_gui\SDL2_gui\SDL_gui.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

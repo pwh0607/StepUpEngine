@@ -1,2 +1,2 @@
 ﻿  GameEngineSample.cpp
-  GameEngineSample.vcxproj -> D:\Project\GameEngine\x64\Debug\GameEngineSample.exe
+D:\Project\GameEngine\GameEngineSample\GameEngineSample.cpp(15): error C4716: 'SDL_main': 값을 반환해야 합니다.
