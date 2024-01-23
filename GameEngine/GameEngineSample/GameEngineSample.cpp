@@ -19,6 +19,36 @@ typedef struct ANCHOR {
     int y;
 } ANCHOR;
 
+class TextBox {
+    int x, y;
+    int w, h;
+    bool isEdit;
+    TTF_Font* font;
+
+public:
+    TextBox() {
+         
+    }
+
+    TextBox(TTF_Font* font, int x, int y, int w, int h) {
+        this->font = font;
+        this->x = x;
+        this->y = y;
+        this->w = w;
+        this->h = h;
+    }
+
+    //텍스트 박스 클릭시...
+    void onClickEvent(SDL_Event& e) {
+        if (e.type == SDL_MOUSEBUTTONDOWN) {
+            //클릭 지점
+            int mouseX = e.button.x;
+            int mouseY = e.button.y;
+            
+        }
+    }
+};
+
 //앵커들
 ANCHOR eastTOP = { WINDOW_WIDTH, 0 };
 ANCHOR eastBOTTOM = { WINDOW_WIDTH, WINDOW_HEIGHT };
