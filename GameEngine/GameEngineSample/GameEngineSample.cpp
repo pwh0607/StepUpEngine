@@ -81,6 +81,32 @@ void init_SceneSystem(void) {
     //width : window_Width - SidebarWidth
 }
 
+void make_Text(SDL_Rect textBox, const char *text, int fontSize) {
+    TTF_Font* font = TTF_OpenFont("D:\\Project\\GameEngine\\Font\\NotoSansKR\\NotoSansKR-Black.ttf", fontSize);
+    if (font == NULL)
+    {
+        printf("폰트 가져오기 실패 : %s\n", TTF_GetError());
+        return;
+    }   
+
+    SDL_Color textColor = { 0,0,0 };        //검정색
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, text, textColor);
+
+    if (textSurface == NULL) {
+        printf("텍스트 렌더링 실패: %s\n", TTF_GetError());
+        TTF_CloseFont(font);
+        return;
+    }
+
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+
+    SDL_RenderCopy(renderer, textTexture, NULL, &textBox);
+
+    SDL_FreeSurface(textSurface);
+    SDL_DestroyTexture(textTexture);
+    TTF_CloseFont(font);
+}
+
 //계층 패널 만들기
 void make_panel() {
     SDL_Rect frame;         //프레임 틀 (헤더와 동일)
