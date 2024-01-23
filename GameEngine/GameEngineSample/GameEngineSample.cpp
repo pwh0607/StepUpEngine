@@ -133,6 +133,61 @@ void make_panel(int x, int y, int w, int h, const char * headerText) {
     make_Text(textBox, headerText, 50);
 }
 
+int make_TransformPanel(int x, int y, int w, int h) {
+    make_panel(x, y, w, h, "Transform");
+
+    //position part
+    SDL_Rect textBox1 = { x + 10, y + 40, 60, 30 };
+    make_Text(textBox1, "Position", 30);
+
+    SDL_Rect boxX = { x + 92, y + 42.5, 15, 28 };
+    make_Text(boxX, "X", 100);
+
+    SDL_Rect boxY = { x + 162, y + 42.5, 15, 28 };
+    make_Text(boxY, "Y", 100);
+
+    SDL_Rect boxZ = { x + 250 - 18, y + 42.5, 15, 28 };
+    make_Text(boxZ, "Z", 100);
+
+    make_InputField(x + 110, y + 45, 40, 25);
+    make_InputField(x + 180, y + 45, 40, 25);
+    make_InputField(x + 250, y + 45, 40, 25);
+
+    //rotation part
+    SDL_Rect textBox2 = { x + 10, y + 40 + 45, 60, 30 };
+    make_Text(textBox2, "Rotation", 30);
+
+    SDL_Rect boxX2 = { x + 92, y + 42.5 + 45, 15, 28 };
+    make_Text(boxX2, "X", 100);
+
+    SDL_Rect boxY2 = { x + 162, y + 42.5 + 45, 15, 28 };
+    make_Text(boxY2, "Y", 100);
+
+    SDL_Rect boxZ2 = { x + 250 - 18, y + 42.5 + 45, 15, 28 };
+    make_Text(boxZ2, "Z", 100);
+
+    make_InputField(x + 110, y + 45 + 45, 40, 25);
+    make_InputField(x + 180, y + 45 + 45, 40, 25);
+    make_InputField(x + 250, y + 45 + 45, 40, 25);
+
+    //scale part
+    SDL_Rect textBox3 = { x + 10, y + 40 + 90, 50, 30 };
+    make_Text(textBox3, "Scale", 30);
+
+    SDL_Rect boxX3 = { x + 92, y + 42.5 + 90, 15, 28 };
+    make_Text(boxX3, "X", 100);
+
+    SDL_Rect boxY3 = { x + 162, y + 42.5 + 90, 15, 28 };
+    make_Text(boxY3, "Y", 100);
+
+    SDL_Rect boxZ3 = { x + 250 - 18, y + 42.5 + 90, 15, 28 };
+    make_Text(boxZ3, "Z", 100);
+
+    make_InputField(x + 110, y + 45 + 90, 40, 25);
+    make_InputField(x + 180, y + 45 + 90, 40, 25);
+    make_InputField(x + 250, y + 45 + 90, 40, 25);
+
+    return 1;
 }
 
 void make_sidebar() {
