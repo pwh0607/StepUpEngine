@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Project\GameEngine\SDL\SDL2_image-2.8.2\include;D:\Project\GameEngine\SDL\SDL2_ttf-2.20.2\include;D:\Project\GameEngine\SDL\SDL2-2.28.5\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Project\GameEngine\SDL\SDL_gfx-2.0.27;D:\Project\GameEngine\SDL\SDL2_image-2.8.2\include;D:\Project\GameEngine\SDL\SDL2_ttf-2.20.2\include;D:\Project\GameEngine\SDL\SDL2-2.28.5\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
