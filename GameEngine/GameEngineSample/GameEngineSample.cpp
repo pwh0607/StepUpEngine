@@ -108,14 +108,31 @@ void make_Text(SDL_Rect textBox, const char *text, int fontSize) {
 }
 
 //계층 패널 만들기
-void make_panel() {
+void make_panel(int x, int y, int w, int h, const char * headerText) {
     SDL_Rect frame;         //프레임 틀 (헤더와 동일)
     SDL_Rect header;        //프레임 헤더
 
-    frame = { WINDOW_WIDTH - SIDEBAR_WIDTH, 120, SIDEBAR_WIDTH, 170 };
+    //frame
+    frame = { x, y, w, h };
+
+    //채우기
     SDL_SetRenderDrawColor(renderer, 220, 220, 220, 255);
-    roundedBoxRGBA(renderer, frame.x, frame.y, frame.x + frame.w, frame.y + frame.h, 10, 255, 0, 0, 255);
     SDL_RenderFillRect(renderer, &frame);
+
+    //테두리
+    SDL_SetRenderDrawColor(renderer, 150, 150, 150, 255);
+    SDL_RenderDrawRect(renderer, &frame);
+
+    //header
+    header = { frame.x, frame.y, SIDEBAR_WIDTH, 35 };
+    SDL_SetRenderDrawColor(renderer, 180, 180, 180, 255);
+    SDL_RenderFillRect(renderer, &header);
+
+    SDL_Rect textBox = { x + 7, y, 100, 30 };
+    
+    make_Text(textBox, headerText, 50);
+}
+
 }
 
 void make_sidebar() {
