@@ -73,6 +73,14 @@ int init_System(void) {
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 }
 
+void init_SceneSystem(void) {
+    //Scene 화면용 렌더러
+    SceneRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+    //Scene 화면 크기
+    //width : window_Width - SidebarWidth
+}
+
 //계층 패널 만들기
 void make_panel() {
     SDL_Rect frame;         //프레임 틀 (헤더와 동일)
