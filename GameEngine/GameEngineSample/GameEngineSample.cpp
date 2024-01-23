@@ -107,6 +107,13 @@ void make_Text(SDL_Rect textBox, const char *text, int fontSize) {
     TTF_CloseFont(font);
 }
 
+void make_InputField(int x, int y, int w, int h) {
+    SDL_Rect inputField = { x,y,w, h };
+
+    SDL_SetRenderDrawColor(renderer, 245, 245, 245, 255);
+    SDL_RenderFillRect(renderer, &inputField);
+}
+
 //계층 패널 만들기
 void make_panel(int x, int y, int w, int h, const char * headerText) {
     SDL_Rect frame;         //프레임 틀 (헤더와 동일)
