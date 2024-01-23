@@ -2,8 +2,13 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+//시스템
 SDL_Window* window;
 SDL_Renderer* renderer;
+SDL_Surface* surface;
+
+//Scene 화면
+SDL_Renderer* SceneRenderer;
 
 const int WINDOW_WIDTH = 1440;
 const int WINDOW_HEIGHT = 840;
