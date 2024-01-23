@@ -199,6 +199,15 @@ int make_ControllerPanel(int x, int y, int w, int h) {
     return 1;
 }
 
+const int BOTTOMBAR_WIDTH = WINDOW_WIDTH - SIDEBAR_WIDTH;
+const int BOTTOMBAR_HEIGHT = 270;
+
+//하단 파일 띄우기 함수
+void make_Bottombar() {
+    SDL_Rect bottomBar = { 0, WINDOW_HEIGHT - BOTTOMBAR_HEIGHT, BOTTOMBAR_WIDTH, BOTTOMBAR_HEIGHT };
+    SDL_SetRenderDrawColor(renderer, 240, 240, 240, 255);
+    SDL_RenderFillRect(renderer, &bottomBar);
+}
     SDL_Rect sideBar = { WINDOW_WIDTH - SIDEBAR_WIDTH,0, SIDEBAR_WIDTH, WINDOW_HEIGHT };
     SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
     SDL_RenderFillRect(renderer, &sideBar);
