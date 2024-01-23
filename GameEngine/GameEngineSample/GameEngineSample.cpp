@@ -193,6 +193,11 @@ int make_TransformPanel(int x, int y, int w, int h) {
 void make_sidebar() {
     // 사이드 바 만들기
     const int SIDEBAR_WIDTH = 300;
+int make_ControllerPanel(int x, int y, int w, int h) {
+    make_panel(x, y, w, h, "Controller");
+
+    return 1;
+}
 
     SDL_Rect sideBar = { WINDOW_WIDTH - SIDEBAR_WIDTH,0, SIDEBAR_WIDTH, WINDOW_HEIGHT };
     SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
