@@ -61,7 +61,7 @@ int init_System(void) {
         printf("SDL 초기화 실패 : %s\n", SDL_GetError());
         return 1;
     }
-
+    
     //윈도우 창 세팅
     window = SDL_CreateWindow("StepUpEngine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
     
@@ -69,6 +69,13 @@ int init_System(void) {
         printf("SDL 창 생성 실패: %s\n", SDL_GetError());
         return 1;
     }
+
+    //TTF 초기화
+    if (TTF_Init() == -1) {
+        printf("TTF 초기화 실패: %s\n", TTF_GetError());
+        return false;
+    }
+
     //렌더 세팅
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 }
@@ -197,9 +204,6 @@ int make_TransformPanel(int x, int y, int w, int h) {
     return 1;
 }
 
-void make_sidebar() {
-    // 사이드 바 만들기
-    const int SIDEBAR_WIDTH = 300;
 int make_ControllerPanel(int x, int y, int w, int h) {
     make_panel(x, y, w, h, "Controller");
 
@@ -215,6 +219,9 @@ void make_Bottombar() {
     SDL_SetRenderDrawColor(renderer, 240, 240, 240, 255);
     SDL_RenderFillRect(renderer, &bottomBar);
 }
+
+void make_Sidebar() {
+
     SDL_Rect sideBar = { WINDOW_WIDTH - SIDEBAR_WIDTH,0, SIDEBAR_WIDTH, WINDOW_HEIGHT };
     SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
     SDL_RenderFillRect(renderer, &sideBar);
@@ -230,15 +237,18 @@ void make_Bottombar() {
     SDL_RenderFillRect(renderer, &objNameTag);
 
     //하위 프레임 만들기
-    make_panel();
-
+    make_TransformPanel(WINDOW_WIDTH - SIDEBAR_WIDTH, 120, SIDEBAR_WIDTH, 170);
+    make_ControllerPanel(WINDOW_WIDTH - SIDEBAR_WIDTH, 120 + 170, SIDEBAR_WIDTH, 170);
 }
 
 int SDL_main(int argc, char* argv[])
 {
     init_System();
+    init_SceneSystem();
+
     bool quit = false;
     SDL_Event e;
+
     while (!quit) {
         // 이벤트 처리
         while (SDL_PollEvent(&e) != 0) {
@@ -252,7 +262,8 @@ int SDL_main(int argc, char* argv[])
         SDL_RenderClear(renderer);
 
         // 화면 그리기
-        make_sidebar();
+        make_Sidebar();
+        make_Bottombar();
 
         // 화면 업데이트
         SDL_RenderPresent(renderer);
