@@ -14,6 +14,8 @@ const int WINDOW_WIDTH = 1440;
 const int WINDOW_HEIGHT = 840;
 const int SIDEBAR_WIDTH = 300;
 
+void make_Text(SDL_Rect textBox, const char* text, int fontSize);
+
 class ANCHOR {
 public:
     int x;
@@ -24,18 +26,56 @@ public:
     }
 };
 
-class TextBox {
+class PANEL {
+private:
+    int x, y, w, h;
+    SDL_Rect frame;
+    SDL_Rect header;
+public:
+    PANEL(int x, int y, int w, int h) {
+        this->x = x;
+        this->y = y;
+        this->w = w;
+        this->h = h;
+        frame = { x,y,w,h };
+        header = { x,y,w,35 };
+    }
+    //헤더는 선택 사항
+    void drawPanel() {
+        SDL_SetRenderDrawColor(renderer, 220, 220, 220, 255);
+        SDL_RenderFillRect(renderer, &frame);
+
+        //테두리
+        SDL_SetRenderDrawColor(renderer, 150, 150, 150, 255);
+        SDL_RenderDrawRect(renderer, &frame);
+
+        SDL_SetRenderDrawColor(renderer, 180, 180, 180, 255);
+        SDL_RenderFillRect(renderer, &header);
+    }
+    void setTitle(const char* title) {
+        SDL_Rect textBox = { x + 7, y, 100, 30 };
+        make_Text(textBox, title, 50);
+    }
+};
+
+//앵커들
+const ANCHOR eastTOP = ANCHOR(WINDOW_WIDTH, 0);
+const ANCHOR eastBOTTOM = ANCHOR(WINDOW_WIDTH, WINDOW_HEIGHT);
+const ANCHOR westTOP = ANCHOR(0, 0);
+const ANCHOR westBOTTOM = ANCHOR(0, WINDOW_HEIGHT);
+
+class InputField {
     int x, y;
     int w, h;
     bool isEdit;
     TTF_Font* font;
 
 public:
-    TextBox() {
+    InputField() {
          
     }
 
-    TextBox(TTF_Font* font, int x, int y, int w, int h) {
+    InputField(TTF_Font* font, int x, int y, int w, int h) {
         this->font = font;
         this->x = x;
         this->y = y;
@@ -53,12 +93,6 @@ public:
         }
     }
 };
-
-//앵커들
-const ANCHOR eastTOP = ANCHOR(WINDOW_WIDTH, 0); 
-const ANCHOR eastBOTTOM = ANCHOR(WINDOW_WIDTH, WINDOW_HEIGHT);
-const ANCHOR westTOP = ANCHOR(0, 0);
-const ANCHOR westBOTTOM = ANCHOR(0, WINDOW_HEIGHT);
 
 int init_System(void) {
     //환경 설정
@@ -127,34 +161,11 @@ void make_InputField(int x, int y, int w, int h) {
     SDL_RenderFillRect(renderer, &inputField);
 }
 
-//계층 패널 만들기
-void make_panel(int x, int y, int w, int h, const char * headerText) {
-    SDL_Rect frame;         //프레임 틀 (헤더와 동일)
-    SDL_Rect header;        //프레임 헤더
-
-    //frame
-    frame = { x, y, w, h };
-
-    //채우기
-    SDL_SetRenderDrawColor(renderer, 220, 220, 220, 255);
-    SDL_RenderFillRect(renderer, &frame);
-
-    //테두리
-    SDL_SetRenderDrawColor(renderer, 150, 150, 150, 255);
-    SDL_RenderDrawRect(renderer, &frame);
-
-    //header
-    header = { frame.x, frame.y, SIDEBAR_WIDTH, 35 };
-    SDL_SetRenderDrawColor(renderer, 180, 180, 180, 255);
-    SDL_RenderFillRect(renderer, &header);
-
-    SDL_Rect textBox = { x + 7, y, 100, 30 };
-    
-    make_Text(textBox, headerText, 50);
-}
-
+//하위 계층 요소가 필요하므로 따로 만들기.
 int make_TransformPanel(int x, int y, int w, int h) {
-    make_panel(x, y, w, h, "Transform");
+    PANEL p = PANEL(x, y, w, h);
+    p.drawPanel();
+    p.setTitle("Transform");
 
     //position part
     SDL_Rect textBox1 = { x + 10, y + 40, 60, 30 };
@@ -211,7 +222,10 @@ int make_TransformPanel(int x, int y, int w, int h) {
 }
 
 int make_ControllerPanel(int x, int y, int w, int h) {
-    make_panel(x, y, w, h, "Controller");
+    PANEL p = PANEL(x, y, w, h);    
+    p.drawPanel();
+    p.setTitle("Controller");
+
 
     return 1;
 }
