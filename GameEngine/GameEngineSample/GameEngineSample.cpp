@@ -14,10 +14,15 @@ const int WINDOW_WIDTH = 1440;
 const int WINDOW_HEIGHT = 840;
 const int SIDEBAR_WIDTH = 300;
 
-typedef struct ANCHOR {
+class ANCHOR {
+public:
     int x;
     int y;
-} ANCHOR;
+    ANCHOR(int x, int y) {
+        this->x = x;
+        this->y = y;
+    }
+};
 
 class TextBox {
     int x, y;
@@ -50,10 +55,10 @@ public:
 };
 
 //앵커들
-ANCHOR eastTOP = { WINDOW_WIDTH, 0 };
-ANCHOR eastBOTTOM = { WINDOW_WIDTH, WINDOW_HEIGHT };
-ANCHOR westTOP = { 0, 0 };
-ANCHOR westBOTTOM = { 0, WINDOW_HEIGHT };
+const ANCHOR eastTOP = ANCHOR(WINDOW_WIDTH, 0); 
+const ANCHOR eastBOTTOM = ANCHOR(WINDOW_WIDTH, WINDOW_HEIGHT);
+const ANCHOR westTOP = ANCHOR(0, 0);
+const ANCHOR westBOTTOM = ANCHOR(0, WINDOW_HEIGHT);
 
 int init_System(void) {
     //환경 설정
@@ -87,6 +92,7 @@ void init_SceneSystem(void) {
     //Scene 화면 크기
     //width : window_Width - SidebarWidth
 }
+
 
 void make_Text(SDL_Rect textBox, const char *text, int fontSize) {
     TTF_Font* font = TTF_OpenFont("D:\\Project\\GameEngine\\Font\\NotoSansKR\\NotoSansKR-Black.ttf", fontSize);
