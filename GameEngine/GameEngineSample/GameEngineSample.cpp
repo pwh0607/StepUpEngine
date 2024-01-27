@@ -1,6 +1,9 @@
 ﻿#include <iostream>
+#include <vector>
 #include <SDL.h>
 #include <SDL_ttf.h>
+
+using namespace std;
 
 //시스템
 SDL_Window* window;
@@ -52,9 +55,89 @@ public:
         SDL_SetRenderDrawColor(renderer, 180, 180, 180, 255);
         SDL_RenderFillRect(renderer, &header);
     }
+
     void setTitle(const char* title) {
         SDL_Rect textBox = { x + 7, y, 100, 30 };
         make_Text(textBox, title, 50);
+    }
+};
+
+class InputField {
+private:
+    TTF_Font* font_;
+    int x_;
+    int y_;
+    int width_;
+    int height_;
+    string text_;
+    int cursorPos_;
+    bool isEditing_;
+
+public:
+    InputField(TTF_Font* font, int x, int y, int width, int height)
+        : font_(font), x_(x), y_(y), width_(width), height_(height), isEditing_(false) {
+        text_ = " ";
+        cursorPos_ = 0;
+
+        // 텍스트 박스 그리기
+        SDL_Rect textBoxRect = { x_, y_, width_, height_ };
+        SDL_SetRenderDrawColor(renderer, 240, 240, 240, 255);
+        SDL_RenderFillRect(renderer, &textBoxRect);
+    }
+    void handleEvent(SDL_Event& e) {
+        // 마우스 클릭으로 텍스트 박스 선택/해제
+        if (e.type == SDL_MOUSEBUTTONDOWN) {
+            int mouseX = e.button.x;
+            int mouseY = e.button.y;
+            
+            if (mouseX >= x_ && mouseX <= x_ + width_ && mouseY >= y_ && mouseY <= y_ + height_) {
+                isEditing_ = true;
+            }
+            else {
+                isEditing_ = false;
+            }
+        }
+
+        // 키보드 입력 처리
+        if (isEditing_ && e.type == SDL_KEYDOWN) {
+            if (e.key.keysym.sym == SDLK_BACKSPACE && text_.length() > 0 && cursorPos_ > 0) {
+                // Backspace 키를 누르면 문자 삭제
+                text_.erase(cursorPos_ - 1, 1);
+                cursorPos_--;
+            }
+            else if (e.key.keysym.sym == SDLK_LEFT && cursorPos_ > 0) {
+                // 왼쪽 화살표 키를 누르면 커서 위치 이동
+                cursorPos_--;
+            }
+            else if (e.key.keysym.sym == SDLK_RIGHT && cursorPos_ < static_cast<int>(text_.length())) {
+                // 오른쪽 화살표 키를 누르면 커서 위치 이동
+                cursorPos_++;
+            }
+        }
+
+        // 유니코드 문자 입력 처리
+        if (isEditing_ && e.type == SDL_TEXTINPUT) {
+            text_.insert(cursorPos_, e.text.text);
+            cursorPos_++;
+        }
+    }
+
+    void render() {
+
+        // 텍스트 렌더링
+        SDL_Surface* textSurface = TTF_RenderText_Solid(font_, text_.c_str(), { 0, 0, 0, 255 });
+        SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+
+        SDL_Rect renderQuad = { x_, y_ + (height_ - textSurface->h) / 2, textSurface->w, textSurface->h };
+        SDL_RenderCopy(renderer, textTexture, nullptr, &renderQuad);
+
+        // 커서 그리기
+        if (isEditing_) {
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_RenderDrawLine(renderer, x_ + renderQuad.w, y_ + renderQuad.y, x_ + renderQuad.w, y_ + renderQuad.y + renderQuad.h);
+        }
+        SDL_FreeSurface(textSurface);
+        SDL_DestroyTexture(textTexture);
     }
 };
 
@@ -64,35 +147,8 @@ const ANCHOR eastBOTTOM = ANCHOR(WINDOW_WIDTH, WINDOW_HEIGHT);
 const ANCHOR westTOP = ANCHOR(0, 0);
 const ANCHOR westBOTTOM = ANCHOR(0, WINDOW_HEIGHT);
 
-class InputField {
-    int x, y;
-    int w, h;
-    bool isEdit;
-    TTF_Font* font;
-
-public:
-    InputField() {
-         
-    }
-
-    InputField(TTF_Font* font, int x, int y, int w, int h) {
-        this->font = font;
-        this->x = x;
-        this->y = y;
-        this->w = w;
-        this->h = h;
-    }
-
-    //텍스트 박스 클릭시...
-    void onClickEvent(SDL_Event& e) {
-        if (e.type == SDL_MOUSEBUTTONDOWN) {
-            //클릭 지점
-            int mouseX = e.button.x;
-            int mouseY = e.button.y;
-            
-        }
-    }
-};
+//이벤트 루프용 벡터
+vector<InputField> ins;
 
 int init_System(void) {
     //환경 설정
@@ -118,15 +174,6 @@ int init_System(void) {
     //렌더 세팅
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 }
-
-void init_SceneSystem(void) {
-    //Scene 화면용 렌더러
-    SceneRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-    //Scene 화면 크기
-    //width : window_Width - SidebarWidth
-}
-
 
 void make_Text(SDL_Rect textBox, const char *text, int fontSize) {
     TTF_Font* font = TTF_OpenFont("D:\\Project\\GameEngine\\Font\\NotoSansKR\\NotoSansKR-Black.ttf", fontSize);
@@ -155,10 +202,10 @@ void make_Text(SDL_Rect textBox, const char *text, int fontSize) {
 }
 
 void make_InputField(int x, int y, int w, int h) {
-    SDL_Rect inputField = { x,y,w, h };
-
-    SDL_SetRenderDrawColor(renderer, 245, 245, 245, 255);
-    SDL_RenderFillRect(renderer, &inputField);
+    //inputfield 전용 폰트.
+    TTF_Font* font = TTF_OpenFont("D:\\Project\\GameEngine\\Font\\NotoSansKR\\NotoSansKR-Black.ttf", 20);
+    InputField in = InputField(font, x, y, w, h);
+    ins.push_back(in);
 }
 
 //하위 계층 요소가 필요하므로 따로 만들기.
@@ -225,8 +272,6 @@ int make_ControllerPanel(int x, int y, int w, int h) {
     PANEL p = PANEL(x, y, w, h);    
     p.drawPanel();
     p.setTitle("Controller");
-
-
     return 1;
 }
 
@@ -241,7 +286,6 @@ void make_Bottombar() {
 }
 
 void make_Sidebar() {
-
     SDL_Rect sideBar = { WINDOW_WIDTH - SIDEBAR_WIDTH,0, SIDEBAR_WIDTH, WINDOW_HEIGHT };
     SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
     SDL_RenderFillRect(renderer, &sideBar);
@@ -261,10 +305,10 @@ void make_Sidebar() {
     make_ControllerPanel(WINDOW_WIDTH - SIDEBAR_WIDTH, 120 + 170, SIDEBAR_WIDTH, 170);
 }
 
+
 int SDL_main(int argc, char* argv[])
 {
     init_System();
-    init_SceneSystem();
 
     bool quit = false;
     SDL_Event e;
@@ -275,21 +319,32 @@ int SDL_main(int argc, char* argv[])
             if (e.type == SDL_QUIT) {
                 quit = true;
             }
-        }
 
+            for (auto& in : ins) {
+                in.handleEvent(e);
+            }
+        }
+        
         // 화면 지우기
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
 
-        // 화면 그리기
+        // 보조 바 그리기
         make_Sidebar();
         make_Bottombar();
 
+        for (auto& in : ins) {
+            in.render();
+        }
+
         // 화면 업데이트
         SDL_RenderPresent(renderer);
+
+        SDL_Delay(8);
     }
 
     // 자원 해제
+    SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
 
