@@ -1,20 +1,18 @@
+#include <iostream>
+
 #include "imgui.h"
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_sdlrenderer2.h"
-
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include <iostream>
+#include "UI.h"
+#include "GameObject.h"
 
 using namespace std;
 
 SDL_Window* window;
 SDL_Renderer* renderer;
-
-//객체 UI
-const int OBJECTUI_WIDTH = 340;
-const int OBJECTUI_HEIGHT = 500;
 
 //윈도우 UI
 const int WINDOW_WIDTH = 1440;
@@ -24,7 +22,6 @@ const int WINDOW_HEIGHT = 740;
 const int GV_WIDTH = 1000;
 
 void init_SDL() {
-
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0) {
         fprintf(stderr, "SDL 초기화 실패: %s\n", SDL_GetError());
     }
@@ -59,170 +56,21 @@ void init_IMGUI() {
     cout << "IMGUI 초기화 완료" << endl;
 }
 
-bool main_popup = false;
-
-static void ShowExampleAppMainMenuBar()
-{
-    ImGui::ShowDemoWindow();
-    if (ImGui::BeginMainMenuBar())
-    {
-        if (ImGui::BeginMenu("File"))
-        {
-            if(ImGui::MenuItem("NewProject")){}
-            if(ImGui::MenuItem("Open")){}
-            if(ImGui::MenuItem("Option1")){}
-            ImGui::EndMenu();
+void draw() {
+    int centerX = WINDOW_WIDTH / 2;
+    int centerY = WINDOW_HEIGHT / 2;
+    int radius = 100;
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0xFF);
+    for (int w = 0; w < radius * 2; ++w) {
+        for (int h = 0; h < radius * 2; ++h) {
+            int dx = radius - w;
+            int dy = radius - h;
+            if ((dx * dx + dy * dy) <= (radius * radius)) {
+                SDL_RenderDrawPoint(renderer, centerX + dx, centerY + dy);
+            }
         }
-        if (ImGui::BeginMenu("Edit"))
-        {
-            if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-            if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
-            ImGui::Separator();
-            if (ImGui::MenuItem("Cut", "CTRL+X")) {}
-            if (ImGui::MenuItem("Copy", "CTRL+C")) {}
-            if (ImGui::MenuItem("Paste", "CTRL+V")) {}
-            ImGui::EndMenu();
-        }
-        ImGui::EndMainMenuBar();
-    }
-}
-
-void set_Main_PopUp() {
-    if (main_popup) {
-        ImGui::OpenPopup("Example Popup");
-        main_popup = false;
-    }
-    
-    // 팝업 윈도우 렌더링
-    if (ImGui::BeginPopup("Example Popup")) {
-        if (ImGui::BeginMenu("Create Object")) { 
-            if (ImGui::MenuItem("Circle")) {
-                cout << "원 생성\n";
-            }
-            if (ImGui::MenuItem("Triangle")) {
-                cout << "삼각형 생성\n";
-            }
-            if (ImGui::MenuItem("Rectangle")) {
-                cout << "사각형 생성\n";
-            }
-            if (ImGui::MenuItem("Resource")) {
-                cout << "리소스 불러오기...\n";
-
-            }
-            ImGui::EndMenu();
-        }
-        if (ImGui::MenuItem("Option 2")) {
-
-        }
-        if (ImGui::MenuItem("Option 3")) {
-
-        }
-        if (ImGui::MenuItem("Option 4")) {
-
-        }
-
-
-
-        ImGui::EndPopup();
-    }
-}
-
-void set_GameView() {
-    ImGui::NewFrame();  // ImGui에 대한 NewFrame 호출
-    ImGui::SetNextWindowPos(ImVec2(WINDOW_WIDTH - GV_WIDTH, 0)); // 윈도우 위치를 지정
-    ImGui::Begin("GameView", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
-    ImGui::End();
-    ImGui::Render();
-}
-
-void set_ImGUI() {
-    ImGui::SetNextWindowSize(ImVec2(OBJECTUI_WIDTH, OBJECTUI_HEIGHT)); // 윈도우 크기를 지정
-    //ui 헤더 이름
-    ImGui::Begin("Obecjt-UI", nullptr);
-    if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
-    {
-        //inputFloat 상자 크기들 조정
-        ImGui::PushItemWidth(47);
-            //Translate
-            ImGui::Text("Position \t");
-            ImGui::SameLine();
-            {
-                static float pos[] = { 0.0f,0.0f,0.0f };    
-                ImGui::PushID("TX");
-                    ImGui::Text("X");
-                    ImGui::SameLine();
-                    ImGui::InputFloat(" ", &pos[0], NULL, NULL, "%.2f");
-                ImGui::PopID();
-                ImGui::SameLine();
-                ImGui::PushID("TY");
-                    ImGui::Text("Y");
-                    ImGui::SameLine();
-                    ImGui::InputFloat(" ", &pos[1], NULL, NULL, "%.2f");
-                ImGui::PopID();       
-                ImGui::SameLine();
-                ImGui::PushID("TZ");
-                    ImGui::Text("Z");
-                    ImGui::SameLine();
-                    ImGui::InputFloat(" ", &pos[2], NULL, NULL, "%.2f");
-                ImGui::PopID();
-            }
-
-            //Rotation
-            ImGui::Text("Rotation \t");
-            static float rot[3] = { 0.0f,0.0f,0.0f };
-            ImGui::SameLine();
-            {
-                ImGui::PushID("RX");
-                    ImGui::Text("X");
-                    ImGui::SameLine();
-                    ImGui::InputFloat(" ", &rot[0], NULL, NULL, "%.2f");
-                ImGui::PopID();
-                ImGui::SameLine();
-                ImGui::PushID("RY");
-                    ImGui::Text("Y");
-                    ImGui::SameLine();
-                    ImGui::InputFloat(" ", &rot[1], NULL, NULL, "%.2f");
-                ImGui::PopID();
-                ImGui::SameLine();
-                ImGui::PushID("RZ");
-                    ImGui::Text("Z");
-                    ImGui::SameLine();
-                    ImGui::InputFloat(" ", &rot[2], NULL, NULL, "%.2f");
-                ImGui::PopID();
-            }
-
-            //Scale
-            ImGui::Text("Scale\t\t");
-            static float scale[3] = { 0.0f,0.0f,0.0f };
-            ImGui::SameLine();
-            {                
-            ImGui::PushID("SX");
-                ImGui::Text("X");
-                ImGui::SameLine();
-                ImGui::InputFloat(" ", &scale[0], NULL, NULL, "%.2f");
-            ImGui::PopID();
-            ImGui::SameLine();
-            ImGui::PushID("SY");
-                ImGui::Text("Y");
-                ImGui::SameLine();
-                ImGui::InputFloat(" ", &scale[1], NULL, NULL, "%.2f");
-            ImGui::PopID();
-            ImGui::SameLine();
-            ImGui::PushID("SZ");
-                ImGui::Text("Z");
-                ImGui::SameLine();
-                ImGui::InputFloat(" ", &scale[2], NULL, NULL, "%.2f");
-            ImGui::PopID();
-            }
-        ImGui::PopItemWidth();
-        ImGui::Separator();
     }
 
-    if (ImGui::BeginPopup("MyPopup")) {
-        ImGui::Text("This is a popup!");
-        ImGui::EndPopup();
-    }
-    ImGui::End();
 }
 
 int main(int argc, char** argv) {
@@ -231,7 +79,12 @@ int main(int argc, char** argv) {
     init_IMGUI();
 
     bool quit = false;
-
+    PopUp MP;                   //MainPopup
+    MainMenuBar MMB;            //MainMenuBar
+    //GameObject obj;
+    
+    //test
+    
     SDL_Event e;
     while (!quit) {
         while (SDL_PollEvent(&e)) {
@@ -242,10 +95,19 @@ int main(int argc, char** argv) {
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 if (e.button.button == SDL_BUTTON_RIGHT) {
-                    main_popup = true;
+                    MP.isClicked = true;
                 }
-                break;
+                else if (e.button.button == SDL_BUTTON_LEFT) {
+                    
+                }
+            case SDL_MOUSEBUTTONUP:
+                if (e.button.button == SDL_BUTTON_LEFT) {
+                    cout << "마우스 버튼 업\n";
+                }
+            case SDL_MOUSEMOTION:
+                
             }
+            break;
         }
 
         //프레임 시작
@@ -253,11 +115,9 @@ int main(int argc, char** argv) {
         ImGui_ImplSDL2_NewFrame();  // ImGui SDL2에 대한 NewFrame 호출
         ImGui::NewFrame();
 
-        set_Main_PopUp();
-        ShowExampleAppMainMenuBar();
-        set_ImGUI();
-
-
+        MP.Show();
+        MMB.Show();
+        //obj.Render(renderer);
         ImGui::Render();
 
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
