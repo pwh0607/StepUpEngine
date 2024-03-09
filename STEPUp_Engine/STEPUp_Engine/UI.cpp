@@ -44,12 +44,21 @@ void PopUp::Show() {
         if (ImGui::BeginMenu("Create Object")) {
             if (ImGui::MenuItem("Circle")) {
                 cout << "원 생성\n";
+                
             }
             if (ImGui::MenuItem("Triangle")) {
                 cout << "삼각형 생성\n";
             }
             if (ImGui::MenuItem("Rectangle")) {
                 cout << "사각형 생성\n";
+                //마우스 정보 가져오기
+                /*
+                int mouseX, mouseY;
+                SDL_GetMouseState(&mouseX, &mouseY);
+
+                //해당 포인터 위치로 position 세팅
+                Rect rect(mouseX, mouseY, 0.0f);
+                */
             }
             if (ImGui::MenuItem("Resource")) {
                 cout << "리소스 불러오기...\n";
@@ -70,15 +79,17 @@ void PopUp::Show() {
     }
 }
 
+ObjUI::ObjUI():pos({0.0f,0.0f,0.0f}), rot({ 0.0f,0.0f,0.0f }), scale({ 1.0f,1.0f,1.0f }) {
 
-/*
-ObjUI::ObjUI(GameObject obj) {
-    objName = obj.name;
-    pos = obj.pos;
-    rot = obj.rot;
-    scale = obj.scale;
 }
 
+void ObjUI::Set_Object(GameObject *obj) {
+    this->obj = obj;
+}
+
+void ObjUI::Set_Name(string name) {
+    
+}
 void ObjUI::Set_Position(float x, float y, float z){
     pos.x = x;
     pos.y = y;
@@ -95,10 +106,6 @@ void ObjUI::Set_Scale(float x, float y, float z) {
     scale.x = x;
     scale.y = y;
     scale.z = z;
-}
-
-void ObjUI::Set_Name(const string& name) {
-    objName = name;
 }
 
 void ObjUI::Show() {
@@ -188,4 +195,9 @@ void ObjUI::Show() {
     }
     ImGui::End();
 }
-*/
+
+void ObjUI::Reset() {
+    pos = { 0.0,0.0,0.0 };
+    rot = { 0.0,0.0,0.0 };
+    scale = { 0.0,0.0,0.0 };
+}

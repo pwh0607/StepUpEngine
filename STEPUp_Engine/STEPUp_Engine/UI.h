@@ -26,26 +26,31 @@ public:
 	bool isClicked;
 	void Show() override;
 };
-/*
+
 class ObjUI : UI {
 private:
 	//ui 크기
 	const int OBJECTUI_WIDTH = 340;
 	const int OBJECTUI_HEIGHT = 500;
+	
 	//오브젝트 이름
-	string objName;
+	GameObject *obj;
 
 	//해당 오브젝트 Transition
-	static Position pos;
-	static Rotation rot;
-	static Scale scale;
+	Position pos;
+	Rotation rot;
+	Scale scale;
 public:
-	ObjUI(GameObject obj);
+	ObjUI();
 	void Show() override;
+	void Set_Object(GameObject *obj);
+
+	//프레임 단위로 개체가 이동할때마다 갱신하기 위해.
+	void Set_Name(string name);
 	void Set_Position(float x, float y, float z);
 	void Set_Rotation(float x, float y, float z);
 	void Set_Scale(float x, float y, float z);
-	void Set_Name(const string& name);
+	void Reset();
 };
-*/
+
 #endif
