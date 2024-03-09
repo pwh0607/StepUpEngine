@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 #include "imgui.h"
 #include "imgui_impl_sdl2.h"
@@ -55,23 +56,8 @@ void init_IMGUI() {
 
     cout << "IMGUI 초기화 완료" << endl;
 }
-
-void draw() {
-    int centerX = WINDOW_WIDTH / 2;
-    int centerY = WINDOW_HEIGHT / 2;
-    int radius = 100;
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0xFF);
-    for (int w = 0; w < radius * 2; ++w) {
-        for (int h = 0; h < radius * 2; ++h) {
-            int dx = radius - w;
-            int dy = radius - h;
-            if ((dx * dx + dy * dy) <= (radius * radius)) {
-                SDL_RenderDrawPoint(renderer, centerX + dx, centerY + dy);
-            }
-        }
-    }
-
-}
+//Rect, Tri, Resource가 업캐스트 되어 저장되므로 포인터로 선언해야한다.
+vector<GameObject *> GOS;
 
 int main(int argc, char** argv) {
     //초기화 세팅
@@ -81,13 +67,18 @@ int main(int argc, char** argv) {
     bool quit = false;
     PopUp MP;                   //MainPopup
     MainMenuBar MMB;            //MainMenuBar
-    //GameObject obj;
-    
+
+    ObjUI objUI;
+    Rect r(10.0f, 10.0f, 0.0f, 10.0f, 10.0f, 10.0f, 1.0f, 1.0f, 1.0f);
+
+    Rect r2(100.0f, 100.0f, 0.0f, 10.0f, 10.0f, 10.0f, 1.0f, 1.0f, 1.0f);
+    GOS.push_back(&r);
+    GOS.push_back(&r2);
     //test
-    
     SDL_Event e;
     while (!quit) {
         while (SDL_PollEvent(&e)) {
+
             ImGui_ImplSDL2_ProcessEvent(&e);
             switch (e.type) {
             case SDL_QUIT:
@@ -97,32 +88,61 @@ int main(int argc, char** argv) {
                 if (e.button.button == SDL_BUTTON_RIGHT) {
                     MP.isClicked = true;
                 }
-                else if (e.button.button == SDL_BUTTON_LEFT) {
-                    
+                if (e.button.button == SDL_BUTTON_LEFT) {
+                    int mouseX, mouseY;
+                    SDL_GetMouseState(&mouseX, &mouseY);
+                    printf("클릭 좌표 : (%d, %d)\n", mouseX, mouseY);
+
+                    for (const auto& obj : GOS) {
+                        if (mouseX >= obj->pos.x && mouseX <= obj->pos.x + 100 &&
+                            mouseY >= obj->pos.y && mouseY <= obj->pos.y + 100) {
+                            // 클릭된 오브젝트의 정보를 ObjUI에 설정
+                            cout << " 사각형 클릭!!\n";
+                            objUI.Set_Object(obj);
+                            objUI.Set_Position(obj->pos.x, obj->pos.y, obj->pos.z);
+                            obj->clicked = true;
+                            /*
+                            printf("%f,%f,%f\n", obj->pos.x, obj->pos.y, obj->pos.z);
+                            printf("%f,%f,%f\n", obj.rot.x, obj.rot.y, obj.rot.z);
+                            printf("%f,%f,%f\n", obj.scale.x, obj.scale.y, obj.scale.z);
+                            */
+                            break;
+                        }
+                        else {
+                            objUI.Set_Object(NULL);
+                            objUI.Reset();
+                        }
+                    }
+
+                    break;
                 }
             case SDL_MOUSEBUTTONUP:
                 if (e.button.button == SDL_BUTTON_LEFT) {
-                    cout << "마우스 버튼 업\n";
+
                 }
-            case SDL_MOUSEMOTION:
-                
+                break;
+            case SDL_MOUSEMOTION:           //마우스 움직임 감지.
+                break;
             }
-            break;
         }
 
         //프레임 시작
-        ImGui_ImplSDLRenderer2_NewFrame();  // ImGui Renderer2에 대한 NewFrame 호출
+        ImGui_ImplSDLRenderer2_NewFrame();  // ImGui Renderer2에 대한 NewFrame 호출  
         ImGui_ImplSDL2_NewFrame();  // ImGui SDL2에 대한 NewFrame 호출
         ImGui::NewFrame();
-
+        //objUI.Set_Position(mouseX, mouseY, 0.0f);
+        //imGui 렌더링 파트
         MP.Show();
         MMB.Show();
-        //obj.Render(renderer);
-        ImGui::Render();
+        objUI.Show();
 
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
 
+        for (auto& obj : GOS) {
+            obj->Render(renderer);
+        }
+        ImGui::Render();
         ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
         SDL_RenderPresent(renderer);
     }
