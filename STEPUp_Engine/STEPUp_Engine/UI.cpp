@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "Vector.h"
 #include "imgui.h"
 #include "UI.h"
@@ -52,17 +53,27 @@ void PopUp::Show() {
             if (ImGui::MenuItem("Rectangle")) {
                 cout << "사각형 생성\n";
                 //마우스 정보 가져오기
-                /*
+                
                 int mouseX, mouseY;
                 SDL_GetMouseState(&mouseX, &mouseY);
 
                 //해당 포인터 위치로 position 세팅
-                Rect rect(mouseX, mouseY, 0.0f);
-                */
+                Rect *rect = new Rect(mouseX, mouseY, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+                try
+                {   
+                    cout << "생성 및 추가" << endl;
+                    gameEngine->GOS.push_back(rect);
+                    cout << ":::::" << gameEngine->GOS.size() << endl;
+                }   
+                catch (const std::exception&)
+                {
+                    cout << "오류발생." << endl;
+                    delete rect;
+                }
+
             }
             if (ImGui::MenuItem("Resource")) {
                 cout << "리소스 불러오기...\n";
-
             }
             ImGui::EndMenu();
         }
@@ -79,33 +90,50 @@ void PopUp::Show() {
     }
 }
 
-ObjUI::ObjUI():pos({0.0f,0.0f,0.0f}), rot({ 0.0f,0.0f,0.0f }), scale({ 1.0f,1.0f,1.0f }) {
-
+ObjUI::ObjUI() :pos({ 0.0f,0.0f,0.0f }), rot({ 0.0f,0.0f,0.0f }), scale({ 1.0f,1.0f,1.0f }){
+    obj = nullptr;
 }
 
-void ObjUI::Set_Object(GameObject *obj) {
+void ObjUI::setObject(GameObject *obj) {
     this->obj = obj;
 }
 
-void ObjUI::Set_Name(string name) {
+void ObjUI::setName(string name) {
     
 }
-void ObjUI::Set_Position(float x, float y, float z){
+void ObjUI::setPosition(float x, float y, float z){
     pos.x = x;
     pos.y = y;
     pos.z = z;
 }
 
-void ObjUI::Set_Rotation(float x, float y, float z) {
+void ObjUI::setRotation(float x, float y, float z) {
     rot.x = x;
     rot.y = y;
     rot.z = z;
 }
 
-void ObjUI::Set_Scale(float x, float y, float z) {
+void ObjUI::setScale(float x, float y, float z) {
     scale.x = x;
     scale.y = y;
     scale.z = z;
+}
+
+void ObjUI::setColor() {
+    ImVec4 vec;
+    if (obj != nullptr) {
+        vec = ImVec4(obj->rgba.x, obj->rgba.y, obj->rgba.z, obj->rgba.w);
+    }
+    else {
+        vec = ImVec4(1.0f, 1.0f, 1.0f, 1.0f); // 기본값 설정
+    }
+
+    if (ImGui::ColorEdit4("RGBA Color", (float*)&vec)) {
+        // UI에서 값이 변경되면 객체에 저장
+        if (obj != nullptr) {
+            obj->rgba = ImVec4(vec.x, vec.y, vec.z, vec.w);
+        }
+    }
 }
 
 void ObjUI::Show() {
@@ -189,9 +217,8 @@ void ObjUI::Show() {
         ImGui::Separator();
     }
 
-    if (ImGui::BeginPopup("MyPopup")) {
-        ImGui::Text("This is a popup!");
-        ImGui::EndPopup();
+    if (ImGui::CollapsingHeader("Color", ImGuiTreeNodeFlags_DefaultOpen)) {
+        setColor();
     }
     ImGui::End();
 }
@@ -200,4 +227,22 @@ void ObjUI::Reset() {
     pos = { 0.0,0.0,0.0 };
     rot = { 0.0,0.0,0.0 };
     scale = { 0.0,0.0,0.0 };
+}
+
+Hierarchy::Hierarchy() {
+    HIERARCY_WIDTH = 250;
+    HIERARCY_HEIGHT = gameEngine->getHeight();
+}
+
+void Hierarchy::Show() {
+    ImGui::SetNextWindowPos(ImVec2(0, 18));
+    ImGui::SetNextWindowSize(ImVec2(HIERARCY_WIDTH, HIERARCY_HEIGHT), ImGuiCond_FirstUseEver);
+    ImGui::Begin("Hierarchy", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+    for (auto& obj : gameEngine->GOS) {
+        if (ImGui::MenuItem(obj->name.c_str())) {
+
+        }
+    }
+    
+    ImGui::End();
 }
