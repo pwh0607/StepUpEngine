@@ -18,7 +18,11 @@ public:
 	Rotation rot;
 	Scale scale;
 
-	bool clicked = false;
+	//컬러정보
+	ImVec4 rgba;
+
+	bool clicked;
+	bool dragging;
 
 	//property
 	virtual bool isClicked() { return false; }
