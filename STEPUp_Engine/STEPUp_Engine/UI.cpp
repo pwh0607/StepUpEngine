@@ -246,3 +246,17 @@ void Hierarchy::Show() {
     
     ImGui::End();
 }
+
+TestingUI::TestingUI() {
+    width = 100;
+    height = 80;
+}
+
+void TestingUI::Show(){
+    if (ImGui::Button("test")) {
+
+    }
+    if (ImGui::Button("test2")) {
+
+    }
+}

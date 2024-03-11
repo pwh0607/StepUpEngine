@@ -15,9 +15,14 @@
 
 using namespace std;
 
-GameEngine::GameEngine() {
+GameEngine::GameEngine(){
     window = nullptr;
-    renderer = nullptr;;
+    renderer = nullptr;
+    pressedAlt = false;
+    gameView = new GameView(WINDOW_WIDTH, WINDOW_HEIGHT);
+    developmentView = new DevelopmentView(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    currentView = developmentView;
 }
 
 void GameEngine::init_SDL() {
@@ -120,7 +125,19 @@ void GameEngine::Start() {
                         objUI.setPosition(obj->pos.x, obj->pos.y, 0.0f);
                     }
                 }
+                //viewPort
+
+
                 break;
+            case SDL_KEYDOWN:
+                if (e.key.keysym.sym == SDLK_LALT) {
+                    pressedAlt = true;
+                }
+                break;
+            case SDL_KEYUP:
+                if (e.key.keysym.sym == SDLK_LALT) {
+                    pressedAlt = false;
+                }
             }
         }
 
@@ -134,6 +151,9 @@ void GameEngine::Start() {
         MMB.Show();
         objUI.Show();
         HIUI.Show();
+
+        //커서 세팅 부분.
+        setCursor();
 
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
@@ -181,4 +201,16 @@ void GameEngine::setViewPort() {
     SDL_Rect panel = { 250, 0, WINDOW_WIDTH-250, WINDOW_HEIGHT-18 };
     SDL_SetRenderDrawColor(renderer, 220, 220, 220, 255);
     SDL_RenderFillRect(renderer, &panel);
+}
+
+void GameEngine::setCursor() {
+    SDL_Cursor* hand = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
+    SDL_Cursor* arrow = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
+
+    if (pressedAlt) {
+        SDL_SetCursor(hand);
+    }
+    else {
+        SDL_SetCursor(arrow);
+    }
 }

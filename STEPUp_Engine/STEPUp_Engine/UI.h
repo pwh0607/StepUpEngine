@@ -67,4 +67,13 @@ public:
 	Hierarchy();
 	void Show() override;
 };
+
+class TestingUI :UI {
+private:
+	int width;
+	int height;
+public:
+	TestingUI();
+	void Show() override;
+};
 #endif

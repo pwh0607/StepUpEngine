@@ -1,0 +1,38 @@
+﻿  GameEngine.cpp
+  GameObject.cpp
+D:\Project\STEPUp_Engine\STEPUp_Engine\GameObject.cpp(21,13): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\GameObject.cpp(22,14): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\GameObject.cpp(26,16): warning C4244: '*=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\GameObject.cpp(27,17): warning C4244: '*=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\GameObject.cpp(28,23): warning C4838: 'float'에서 'int'(으)로의 변환에는 축소 변환이 필요합니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\GameObject.cpp(28,23): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\GameObject.cpp(28,29): warning C4838: 'float'에서 'int'(으)로의 변환에는 축소 변환이 필요합니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\GameObject.cpp(28,29): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\GameObject.cpp(30,79): warning C4244: '인수': 'float'에서 'Uint8'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\GameObject.cpp(30,68): warning C4244: '인수': 'float'에서 'Uint8'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\GameObject.cpp(30,56): warning C4244: '인수': 'float'에서 'Uint8'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\GameObject.cpp(30,42): warning C4244: '인수': 'float'에서 'Uint8'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_impl_sdl2.cpp
+  imgui_impl_sdlrenderer2.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  mian.cpp
+  Scene.cpp
+  UI.cpp
+D:\Project\STEPUp_Engine\STEPUp_Engine\UI.cpp(61,47): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\UI.cpp(61,39): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\UI.cpp(140,53): warning C4244: '인수': 'const int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\UI.cpp(140,37): warning C4244: '인수': 'const int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\UI.cpp(239,53): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\UI.cpp(239,37): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Vector.cpp
+  View.cpp
+  코드를 생성하고 있습니다.
+  270 of 492 functions (54.9%) were compiled, the rest were copied from previous compilation.
+    3 functions were new in current compilation
+    40 functions had inline decision re-evaluated but remain unchanged
+  코드를 생성했습니다.
+  STEPUp_Engine.vcxproj -> D:\Project\STEPUp_Engine\x64\Release\STEPUp_Engine.exe

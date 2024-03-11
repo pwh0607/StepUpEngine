@@ -1,2 +1,12 @@
 ﻿  GameEngine.cpp
+  UI.cpp
+D:\Project\STEPUp_Engine\STEPUp_Engine\UI.cpp(61,47): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\UI.cpp(61,39): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\UI.cpp(140,53): warning C4244: '인수': 'const int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\UI.cpp(140,37): warning C4244: '인수': 'const int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\UI.cpp(239,53): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Project\STEPUp_Engine\STEPUp_Engine\UI.cpp(239,37): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  View.cpp
+  mian.cpp
+  코드를 생성하고 있습니다...
   STEPUp_Engine.vcxproj -> D:\Project\STEPUp_Engine\x64\Debug\STEPUp_Engine.exe
